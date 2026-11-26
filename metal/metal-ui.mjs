@@ -2,6 +2,7 @@
 // receiving by barcode, the cut planner at the counter, and importing items / parties from Miracle or Excel.
 // The maths lives in metal-core.mjs and data-import.mjs (both unit-tested); this file only draws and saves.
 import * as M from './metal-core.mjs';
+import { ONLY_SHOP_TYPE } from './build-config.mjs';
 import { readTable, detectColumns, itemsFromRows, partiesFromRows, FIELDS } from './data-import.mjs';
 
 export function createMetal(x) {
@@ -473,7 +474,7 @@ export function createMetal(x) {
   function settingsCard() {
     const c = cfg(), reg = S.settings.regime === 'regular';
     return `<div class="card section" id="metalCard"><h2>Type of shop</h2>
-      <label>This shop is a<select id="mtType">${opt('retail', 'General / kirana / retail shop', S.settings.shopType || 'retail')}${opt('metal', 'Metal cutting — bars, pipes and plates cut to size', S.settings.shopType || 'retail')}</select></label>
+      <label${ONLY_SHOP_TYPE && S.settings.shopType === ONLY_SHOP_TYPE ? ' hidden' : ''}>This shop is a<select id="mtType">${opt('retail', 'General / kirana / retail shop', S.settings.shopType || 'retail')}${opt('metal', 'Metal cutting — bars, pipes and plates cut to size', S.settings.shopType || 'retail')}</select></label>
       ${S.settings.shopType === 'metal' && !isMetal() ? '<div class="alert warn">Metal cutting mode is not part of your plan. Ask your provider to turn it on.</div>' : ''}${isMetal() ? `<div class="grid2"><label>Blade loss per cut (mm)<input id="mtKerf" type="number" inputmode="decimal" step="0.1" min="0" max="20" value="${c.kerfMm}"></label>
         <label>Leftover shorter than this is scrap (mm)<input id="mtMin" type="number" inputmode="decimal" step="1" min="0" value="${c.minOffcutMm}"></label></div>
         <p class="hint">Blade loss: a 2 mm blade turns a 6,000 mm bar into five 1,000 mm pieces, not six. Leave 0 if you allow for it yourself.</p>

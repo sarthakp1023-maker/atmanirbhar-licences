@@ -9,7 +9,7 @@ import { createMetal } from './metal-ui.mjs';
 import { createSync } from './sync-ui.mjs';
 import { planAllows, planActive, PAID_FEATURES } from './sync-core.mjs';
 import { initNumpad, dockNumpad } from './numpad.mjs';
-import { DEFAULT_SHOP_TYPE, APP_VERSION, UPDATE_URL } from './build-config.mjs';
+import { DEFAULT_SHOP_TYPE, APP_VERSION, UPDATE_URL, ONLY_SHOP_TYPE, DEMO_SHOP } from './build-config.mjs';
 import { readManifest, isNewer } from './update-core.mjs';
 
 /* ================= state ================= */
@@ -380,6 +380,9 @@ async function reloadShared() {
 }
 async function boot() {
   S.settings = await db.kvGet('settings', null);
+  if (!S.settings && DEMO_SHOP === 'metal') {            // customer website: a first visit opens the demo shop
+    try { const { metalDemoData } = await import('./demo-metal.mjs'); await db.importAll(metalDemoData()); S.settings = await db.kvGet('settings', null); } catch { /* fall back to the setup screen */ }
+  }
   S.counters = await db.kvGet('counters', {});
   S.held = await db.kvGet('held', []);
   S.cart = await db.kvGet('cart', newCart());
@@ -498,7 +501,7 @@ function renderSetup() {
   const p = $('#page-settings');
   p.innerHTML = `<div class="setup"><div class="alert ok">Welcome! Just your shop name and address to start — it takes a few seconds. Everything is saved on this device and works without internet.</div>
     <p class="hint" style="text-align:center">Independent app — not affiliated with, endorsed by or operated by the Government of India.</p>
-    <div class="card"><h2>Type of shop</h2><label>What kind of shop is this?<select id="f_type"><option value="retail"${DEFAULT_SHOP_TYPE === 'metal' ? '' : ' selected'}>General / kirana / retail shop</option><option value="metal"${DEFAULT_SHOP_TYPE === 'metal' ? ' selected' : ''}>Metal cutting — bars, pipes and plates cut to size</option></select></label>
+    <div class="card"${ONLY_SHOP_TYPE ? ' hidden' : ''}><h2>Type of shop</h2><label>What kind of shop is this?<select id="f_type"><option value="retail"${DEFAULT_SHOP_TYPE === 'metal' ? '' : ' selected'}>General / kirana / retail shop</option><option value="metal"${DEFAULT_SHOP_TYPE === 'metal' ? ' selected' : ''}>Metal cutting — bars, pipes and plates cut to size</option></select></label>
       <p class="hint">You can change this later in Settings.</p></div>
     ${settingsForm({}, { quick: true })}
     <div class="card"><label class="row" style="color:var(--ink)"><input type="checkbox" id="f_samples" checked style="width:auto;min-height:auto"> Add sample items to try (you can delete them later)</label></div>
