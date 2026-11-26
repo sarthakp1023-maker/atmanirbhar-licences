@@ -1,6 +1,6 @@
 {
-  "versionCode": 10204,
-  "version": "1.2.4",
-  "file": "Atmanirbhar-Metal-1.2.4.apk",
-  "notes": "On-screen calculator in the cut pop-up and in Receive material. Kirana shop choice removed."
+  "versionCode": 10205,
+  "version": "1.2.5",
+  "file": "Atmanirbhar-Metal-1.2.5.apk",
+  "notes": "Remembers each customer's last price for a material. Picks the leftover piece automatically at every sale. Bigger calculator that opens beside the cut and receive forms."
 }

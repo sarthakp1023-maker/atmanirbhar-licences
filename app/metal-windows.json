@@ -1,7 +1,7 @@
 {
-  "versionCode": 10204,
-  "version": "1.2.4",
-  "file": "Atmanirbhar-Metal-Setup-1.2.4.exe",
-  "url": "https://github.com/sarthakp1023-maker/atmanirbhar-licences/releases/download/windows-1.2.4/Atmanirbhar-Metal-Setup-1.2.4.exe",
-  "notes": "On-screen calculator on the Bill page, in the cut pop-up and in Receive material."
+  "versionCode": 10205,
+  "version": "1.2.5",
+  "file": "Atmanirbhar-Metal-Setup-1.2.5.exe",
+  "url": "https://github.com/sarthakp1023-maker/atmanirbhar-licences/releases/download/windows-1.2.5/Atmanirbhar-Metal-Setup-1.2.5.exe",
+  "notes": "Remembers each customer's last price for a material. Picks the leftover piece automatically at every sale. Bigger calculator that opens beside the cut and receive forms."
 }
