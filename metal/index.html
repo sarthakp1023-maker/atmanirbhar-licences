@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f5c4d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Atmanirbhar">
+<meta name="robots" content="noindex">
+<title>Atmanirbhar</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="app">
+  <nav class="rail" aria-label="Main">
+    <div class="brand"><img class="logo" src="icon.svg" alt=""><span class="brand-name" id="brandName">Atmanirbhar</span></div>
+    <button class="nav" data-page="home"><span class="ni">🏠</span><span data-t="nav.home">Home</span></button>
+    <button class="nav" data-page="bill"><span class="ni">🛒</span><span data-t="nav.bill">Bill</span></button>
+    <button class="nav" data-page="khata"><span class="ni">📒</span><span data-t="nav.khata">Khata</span></button>
+    <button class="nav" data-page="receipts"><span class="ni">🧾</span><span data-t="nav.receipts">Receipts</span></button>
+    <button class="nav rail-only" data-page="inventory" hidden><span class="ni">📥</span><span data-t="nav.inventory">Inventory</span></button>
+    <button class="nav rail-only" data-page="items"><span class="ni">📦</span><span data-t="nav.items">Items</span></button>
+    <button class="nav rail-only" data-page="reports"><span class="ni">📊</span><span data-t="nav.reports">Reports</span></button>
+    <button class="nav rail-only" data-page="settings"><span class="ni">⚙️</span><span data-t="nav.settings">Settings</span></button>
+    <button class="nav phone-only" data-page="more"><span class="ni">☰</span><span data-t="nav.more">More</span></button>
+  </nav>
+  <main class="main">
+    <header class="top">
+      <div class="top-id"><img class="head-logo" src="icon.svg" alt="Atmanirbhar"><div class="top-title"><h1 id="pageTitle">Bill</h1><small id="shopLine"></small></div></div>
+      <div class="top-actions">
+        <button id="installBtn" class="btn sm pri" hidden>⬇ Install app</button>
+        <span id="clockChip" class="chip clock" aria-hidden="true"></span><span id="syncChip" class="chip" hidden></span><span id="netChip" class="chip">● Offline ready</span>
+        <select id="langSelect" aria-label="Language"><option value="en">English</option><option value="hi">हिन्दी</option><option value="gu">ગુજરાતી</option></select>
+      </div>
+    </header>
+    <section id="page-home" class="page"></section>
+    <section id="page-bill" class="page" hidden></section>
+    <section id="page-khata" class="page" hidden></section>
+    <section id="page-receipts" class="page" hidden></section>
+    <section id="page-inventory" class="page" hidden></section>
+    <section id="page-items" class="page" hidden></section>
+    <section id="page-reports" class="page" hidden></section>
+    <section id="page-settings" class="page" hidden></section>
+    <section id="page-more" class="page" hidden></section>
+  </main>
+</div>
+<div id="modalRoot"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="printArea" aria-hidden="true"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
