@@ -1,5 +1,5 @@
 // Offline cache: the whole app works without internet once opened.
-const CACHE = 'india-pos-v28';
+const CACHE = 'india-pos-v29';
 const FILES = ['./', 'index.html', 'app.js', 'india-core.mjs', 'qr.mjs', 'db.mjs', 'licence.mjs', 'licence-public.mjs', 'upi-gateway.mjs', 'phonepe-edc.mjs', 'pay-alerts.mjs', 'metal-core.mjs', 'metal-ui.mjs', 'demo-metal.mjs', 'update-core.mjs', 'data-import.mjs', 'sync-core.mjs', 'sync-ui.mjs', 'sync-config.mjs', 'numpad.mjs', 'build-config.mjs', 'style.css', 'icon.svg', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png'];
 self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())));
 self.addEventListener('activate', e => e.waitUntil(Promise.all([

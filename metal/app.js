@@ -611,6 +611,7 @@ function renderMore() {
     ${tile('settings', '⚙️', t('nav.settings'), 'Shop, GST, UPI ID, printer, backup')}
     <button class="more-tile card" id="morePlan"><span class="mi">⭐</span><span><b>Your plan</b><small>${!S.plan ? 'Not connected to a subscription' : isPro() ? 'Subscription active' + (S.plan.until ? ' · till ' + esc(C.gstDate(S.plan.until * 1000)) : '') : 'Subscription paused or ended'}</small></span>›</button>
     <button class="more-tile card" id="moreBackup"><span class="mi">💾</span><span><b>Backup now</b><small>${esc(S.settings.lastBackup ? 'Last: ' + C.displayDateTime(S.settings.lastBackup) : 'Never backed up')}</small></span>›</button>
+    ${!NATIVE && !standalone() ? `<button class="more-tile card" id="moreInstall"><span class="mi">💻</span><span><b>Install on this computer</b><small>Own window and desktop icon · works without internet</small></span>›</button>` : ''}
     ${updateUrl() ? `<button class="more-tile card" id="moreUpdate"><span class="mi">⬇️</span><span><b>Check for updates</b><small>This is version ${esc(APP_VERSION)}</small></span>›</button>` : `<p class="hint" style="text-align:center">Version ${esc(APP_VERSION)}</p>`}
     <p class="hint" style="text-align:center;margin-top:8px">Independent app — not affiliated with, endorsed by or operated by the Government of India.</p>
   </div>`;
@@ -618,6 +619,7 @@ function renderMore() {
   $('#moreBackup').onclick = backupNow;
   $('#morePlan').onclick = () => planModal();
   if ($('#moreUpdate')) $('#moreUpdate').onclick = checkForUpdate;
+  if ($('#moreInstall')) $('#moreInstall').onclick = installApp;
 }
 /* ---------- updates for an app installed from an APK file (the Google Play build has no UPDATE_URL: Play updates it) ---------- */
 const updateUrl = () => (NATIVE ? UPDATE_URL : DEV_LOCAL && typeof window.__updateUrl === 'string' ? window.__updateUrl : '');
@@ -2096,14 +2098,22 @@ function renderSettings() {
 let installPrompt = null;
 const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installPrompt = e; if (!NATIVE && !standalone()) $('#installBtn').hidden = false; });
-addEventListener('appinstalled', () => { installPrompt = null; $('#installBtn').hidden = true; toast('Installed — open it from your home screen'); });
-$('#installBtn').addEventListener('click', async () => {
-  if (!installPrompt) return;
-  installPrompt.prompt();
-  const { outcome } = await installPrompt.userChoice;
-  if (outcome === 'accepted') $('#installBtn').hidden = true;
-  installPrompt = null;
-});
+addEventListener('appinstalled', () => { installPrompt = null; $('#installBtn').hidden = true; toast('Installed — open it from your desktop or home screen'); if (S.page === 'more') go('more'); });
+async function installApp() {
+  if (installPrompt) {
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') $('#installBtn').hidden = true;
+    installPrompt = null; return;
+  }
+  // The browser has not offered its install box (already installed, or not Chrome / Edge): show the manual way.
+  modal('Install on this computer', `<p>Open this page in <b>Google Chrome</b> or <b>Microsoft Edge</b>, then:</p>
+    <ul><li><b>Chrome:</b> click the install icon at the right end of the address bar, or ⋮ menu → Cast, save and share → Install page as app.</li>
+    <li><b>Edge:</b> ⋯ menu → Apps → Install this site as an app.</li></ul>
+    <p class="hint">The app then opens in its own window from the desktop or Start menu and works without internet. If it is already installed, open it from there. Your shop data stays in the browser you installed it from.</p>`,
+    '<button class="btn pri" data-close>OK</button>');
+}
+$('#installBtn').addEventListener('click', installApp);
 
 /* ================= Android back button: close popup → cart → go to Bill → minimise ================= */
 plugin('App')?.addListener('backButton', () => {
